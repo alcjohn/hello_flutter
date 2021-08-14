@@ -23,7 +23,23 @@ jobs:
           flutter pub get
 
       - name: Build
-        run: flutter build macos
+        run: flutter build macos --release
+
+      - name: Create dmg
+        run: |
+          brew install create-dmg
+          create-dmg \
+            --volname "hello_flutter" \
+            --window-pos 200 120 \
+            --window-size 800 529 \
+            --icon-size 130 \
+            --text-size 14 \
+            --icon "build/macos/Build/Products/Release/hello_flutter.app" 260 250 \
+            --hide-extension "build/macos/Build/Products/Release/hello_flutter.app" \
+            --app-drop-link 540 250 \
+            --hdiutil-quiet \
+            "hello_flutter.dmg" \
+            "build/macos/Build/Products/Release/hello_flutter.app"
 
       - name: 'Upload Artifact'
         uses: actions/upload-artifact@v2
