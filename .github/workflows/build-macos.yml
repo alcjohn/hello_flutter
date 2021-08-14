@@ -9,6 +9,8 @@ on:
 jobs:
   deploy:
     runs-on: macos-latest
+    env:
+      MACOS_APP_RELEASE_PATH: build/macos/Build/Products/Release
     steps:
       - uses: actions/checkout@v2
 
@@ -28,18 +30,20 @@ jobs:
       - name: Create dmg
         run: |
           brew install create-dmg
+          cd $MACOS_APP_RELEASE_PATH
+          test -f hello_flutter.dmg && rm hello_flutter.dmg
           create-dmg \
             --volname "hello_flutter" \
             --window-pos 200 120 \
             --window-size 800 529 \
             --icon-size 130 \
             --text-size 14 \
-            --icon "build/macos/Build/Products/Release/hello_flutter.app" 260 250 \
-            --hide-extension "build/macos/Build/Products/Release/hello_flutter.app" \
+            --icon "hello_flutter.app" 260 250 \
+            --hide-extension "hello_flutter.app" \
             --app-drop-link 540 250 \
             --hdiutil-quiet \
             "hello_flutter.dmg" \
-            "build/macos/Build/Products/Release/hello_flutter.app"
+            "hello_flutter.app"
 
       - name: 'Upload Artifact'
         uses: actions/upload-artifact@v2
