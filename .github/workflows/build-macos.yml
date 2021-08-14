@@ -25,7 +25,7 @@ jobs:
       - name: Build
         run: flutter build macos
 
-        - name: 'Upload Artifact'
-          uses: actions/upload-artifact@v2
-            with:
-              path: buid/macos
+      - name: 'Upload Artifact'
+        uses: actions/upload-artifact@v2
+          with:
+            path: buid/macos
